@@ -1,0 +1,6 @@
+pkgs_gnome:
+  - gnome-control-center       
+  - gnome-shell
+  - gnome-shell-extensions
+  - gnome-tweaks
+  - gdm  

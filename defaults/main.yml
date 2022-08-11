@@ -1,0 +1,41 @@
+---
+
+ssh_agent: true
+
+install:
+  cli_tools: true
+  desktop: "none"
+    # cinnamon
+    # gnome
+    # kde
+    # xfce
+    # awesome
+
+pkgs_useful:
+  - dconf-editor
+  - gnome-disk-utility
+  - gnome-keyring
+  - gnome-screenshot
+  - network-manager-applet
+  - noto-fonts-emoji
+  - polkit-gnome
+  - xautolock
+  - xclip
+  - xcursor-vanilla-dmz
+  - xdg-user-dirs
+  - xorg-xkill
+
+
+cli_tools:
+  - ""
+  - "TOOL"
+  - "TOOL"
+  - "TOOL"
+  - "TOOL"
+  - "TOOL"
+  - "TOOL"
+  - "TOOL"
+  - "TOOL"
+  - "TOOL"
+
+# defaults file for archlinux-setup

@@ -1,0 +1,98 @@
+---
+
+- name: Update system
+  block:
+  - name: Update package cache (pre)
+    community.general.pacman:
+      update_cache: yes
+  
+  - name: Make sure newest archlinux-keyring is installed
+    community.general.pacman:
+      state: "latest"
+      name: "archlinux-keyring"
+    register: "was"
+  
+  - name: Update package cache (post)
+    community.general.pacman:
+      update_cache: yes
+  
+  - name: Upgrade installed packages
+    community.general.pacman:
+      upgrade: true
+
+
+# SSH AGENT CONFIG
+- name: Enable adding of ssh key to agent
+  block:
+  - name: Create systemd global user service
+    copy:
+      src: "files/ssh-agent.service"
+      dest: "/etc/systemd/user/ssh-agent.service"
+
+  - name: Enable systemd global user service
+    service:
+      name: "ssh-agent"
+      scope: "global"
+      enabled: true
+      state: "started"
+    register: systemd_output
+    # failed_when only valid as long as bug exists that prevents module from determining service status
+    failed_when:
+      - systemd_output.msg is defined
+      - systemd_output.msg != "Service is in unknown state"
+
+  - name: Set bash export
+    lineinfile:
+      path: "/home/{{ username }}/.bashrc"
+      line: 'export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"'
+
+  - name: Create .ssh/ directory for user
+    file:
+      state: "directory"
+      path: "/home/{{ username }}/.ssh"
+      owner: "{{ username }}"
+      group: "{{ username }}"
+      mode: "700"
+
+  - name: Set ssh config option
+    blockinfile:
+      path: "/home/{{ username }}/.ssh/config"
+      create: true
+      block: "Host *\n  AddKeysToAgent yes"
+      insertbefore: "BOF"
+      group: "{{ username }}"
+      group: "{{ username }}"
+      mode: "644"
+  when:
+    - ssh_agent | bool
+    - username is defined
+    - ansible_facts.service_mgr == "systemd"
+
+
+
+- name: FAIL
+  fail:
+
+
+
+
+
+- name: "Include vars for desktop '{{ install.desktop }}'"
+  include_vars: "desktop-{{ desktop }}.yml"
+  when:
+    - install.desktop is defined
+    - install.desktop != "none"
+
+- name: "Include tasks for desktop '{{ install.desktop }}'"
+  include_tasks: "install-desktop-{{ desktop }}.yml"
+  when:
+    - install.desktop is defined
+    - install.desktop != "none"
+
+
+- name: DEBUG
+  debug:
+    msg: "{{ was }}"
+
+
+# tasks file for archlinux-setup
