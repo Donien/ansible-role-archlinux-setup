@@ -17,7 +17,7 @@ desktop: ""
 install:
   cli_essential: true
   cli_useful: false
-  desktop_useful: "{{ desktop | default(false, 'true') | bool }}"
+  desktop_useful: false
 
 packages:
   cli_essential:
