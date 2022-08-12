@@ -1,0 +1,15 @@
+---
+
+display_manager: "lightdm"
+
+desktop_packages: 
+  - "cinnamon"
+  - "cinnamon-translations"
+  - "gnome-terminal"
+  - "lightdm"
+
+desktop_packages_deps: 
+  - "blueman"
+  - "nemo-fileroller"
+  - "system-config-printer"
+  - "lightdm-slick-greeter"

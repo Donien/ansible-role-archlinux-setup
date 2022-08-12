@@ -1,0 +1,41 @@
+---
+
+- name: Install desktop packages
+  community.general.pacman:
+    state: "installed"
+    name: "{{ desktop_packages }}"
+
+- name: Install optional dependencies
+  community.general.pacman:
+    state: "installed"
+    name: "{{ desktop_packages_deps }}"
+    reason: "dependency"
+  when: desktop_packages_deps is defined
+
+- name: Install common desktop packages
+  community.general.pacman:
+    state: "installed"
+    name: "{{ packages.desktop_common }}"
+    reason: "dependency"
+
+- name: Configure display manager
+  include_tasks: "configure-{{ display_manager }}.yml"
+
+- name: Disable other display managers and activate desktop's
+  block:
+  - name: Disable other display managers
+    systemd:
+      name: "{{ item }}"
+      enabled: false
+    register: systemd_output
+    # failed_when only valid as long as bug exists that prevents module from determining service status
+    failed_when:
+      - systemd_output.msg is defined
+      - systemd_output.msg != "Service is in unknown state"
+      - not systemd_output.msg is match("Could not find the requested service .*")
+    loop: "{{ display_managers | difference(display_manager) }}"
+
+  - name: Enable corresponding display manager
+    systemd:
+      name: "{{ display_manager }}"
+      enabled: true

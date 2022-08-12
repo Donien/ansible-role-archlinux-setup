@@ -1,0 +1,15 @@
+---
+
+- name: Set up slick-greeter for lightdm
+  lineinfile:
+    path: "/etc/lightdm/lightdm.conf"
+    line: "greeter-session=lightdm-slick-greeter"
+    insertafter: "^#greeter-session=example-gtk-gnome"
+
+- name: Deploy slick-greeter config file
+  copy:
+    src: "files/slick-greeter.conf"
+    dest: "/etc/lightdm/slick-greeter.conf"
+
+
+#/etc/lightdm/slick-greeter.conf

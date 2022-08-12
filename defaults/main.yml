@@ -2,40 +2,61 @@
 
 ssh_agent: true
 
+display_manager: ""
+display_managers:
+  - "gdm"
+  - "lightdm"
+  - "sddm"
+
+desktop: ""
+  # cinnamon
+  # gnome
+  # kde
+  # xfce
+
 install:
-  cli_tools: true
-  desktop: "none"
-    # cinnamon
-    # gnome
-    # kde
-    # xfce
-    # awesome
+  cli_essential: true
+  cli_useful: false
+  desktop_useful: "{{ desktop | default(false, 'true') | bool }}"
 
-pkgs_useful:
-  - dconf-editor
-  - gnome-disk-utility
-  - gnome-keyring
-  - gnome-screenshot
-  - network-manager-applet
-  - noto-fonts-emoji
-  - polkit-gnome
-  - xautolock
-  - xclip
-  - xcursor-vanilla-dmz
-  - xdg-user-dirs
-  - xorg-xkill
-
-
-cli_tools:
-  - ""
-  - "TOOL"
-  - "TOOL"
-  - "TOOL"
-  - "TOOL"
-  - "TOOL"
-  - "TOOL"
-  - "TOOL"
-  - "TOOL"
-  - "TOOL"
-
-# defaults file for archlinux-setup
+packages:
+  cli_essential:
+    - "bash-completion"
+    - "gzip"
+    - "htop"
+    - "man-db"
+    - "unrar"
+    - "unzip"
+    - "vim"
+  cli_useful:
+    - "bind"
+    - "git"
+    - "glow"
+    - "imagemagick"
+    - "nmap"
+    - "pacman-contrib"
+    - "reflector"
+    - "rsync"
+    - "tree"
+    - "wget"
+  desktop_common:
+    - "archlinux-wallpaper"
+    - "celluloid"
+    - "chromium"
+    - "evolution"
+    - "firefox"
+    - "gedit"
+    - "libreoffice-still"
+    - "noto-fonts-emoji"
+    - "xdg-user-dirs"
+    - "xreader"
+  desktop_useful:
+    - "dconf-editor"
+    - "gnome-disk-utility"
+    - "gnome-keyring"
+    - "gnome-screenshot"
+    - "network-manager-applet"
+    - "polkit-gnome"
+    - "xclip"
+    - "xcursor-vanilla-dmz"
+    - "xorg-xkill"

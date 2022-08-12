@@ -2,6 +2,12 @@
 
 - name: Update system
   block:
+  - name: Activate multilib repository
+    replace:
+      path: "/etc/pacman.conf"
+      regexp: "^#\\[multilib\\]\n#Include = /etc/pacman\\.d/mirrorlist$"
+      replace: "[multilib]\nInclude = /etc/pacman.d/mirrorlist"
+
   - name: Update package cache (pre)
     community.general.pacman:
       update_cache: yes
@@ -30,7 +36,7 @@
       dest: "/etc/systemd/user/ssh-agent.service"
 
   - name: Enable systemd global user service
-    service:
+    systemd:
       name: "ssh-agent"
       scope: "global"
       enabled: true
@@ -68,31 +74,33 @@
     - username is defined
     - ansible_facts.service_mgr == "systemd"
 
+- name: Install essential cli tools
+  community.general.pacman:
+    state: "present"
+    name: "{{ packages.cli_essential }}"
+  when:
+    - install.cli_essential | bool
 
+- name: Install useful cli tools
+  community.general.pacman:
+    state: "present"
+    name: "{{ packages.cli_useful }}"
+  when:
+    - install.cli_useful | bool
 
-- name: FAIL
-  fail:
+- name: Install useful graphical applications
+  community.general.pacman:
+    state: "present"
+    name: "{{ packages.desktop_useful }}"
+  when:
+    - install.desktop_useful | bool
 
-
-
-
-
-- name: "Include vars for desktop '{{ install.desktop }}'"
+- name: "Include vars for desktop '{{ desktop }}'"
   include_vars: "desktop-{{ desktop }}.yml"
   when:
-    - install.desktop is defined
-    - install.desktop != "none"
+    - desktop != ""
 
-- name: "Include tasks for desktop '{{ install.desktop }}'"
-  include_tasks: "install-desktop-{{ desktop }}.yml"
+- name: "Include tasks for desktop"
+  include_tasks: "install-desktop.yml"
   when:
-    - install.desktop is defined
-    - install.desktop != "none"
-
-
-- name: DEBUG
-  debug:
-    msg: "{{ was }}"
-
-
-# tasks file for archlinux-setup
+    - desktop != ""
