@@ -1,6 +1,17 @@
-pkgs_gnome:
-  - gnome-control-center       
-  - gnome-shell
-  - gnome-shell-extensions
-  - gnome-tweaks
-  - gdm  
+---
+
+display_manager: "gdm"
+
+desktop_packages:
+  - "file-roller"
+  - "gdm"
+  - "gnome-shell"
+  - "gnome-shell-extensions"
+  - "gnome-system-monitor"
+  - "gnome-terminal"
+  - "gnome-themes-extra"
+  - "gnome-tweaks"
+  - "nautilus"
+
+desktop_packages_deps:
+  - "gnome-control-center"

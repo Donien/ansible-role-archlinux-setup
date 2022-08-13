@@ -34,7 +34,7 @@ You might want to change some variables in order to perform certain actions. A l
   - Installs typical display manager for that DE
   - Supported desktops:
     - `cinnamon`
-    - `gnome` (not yet implemented)
+    - `gnome`
     - `kde` (not yet implemented)
     - `xfce` (not yet implemented)
 - `install.cli_useful`: Installs some useful cli tools.
