@@ -26,6 +26,22 @@
     community.general.pacman:
       upgrade: true
 
+- name: Deploy flatpak
+  block:
+  - name: Install flatpak
+    community.general.pacman:
+      name: "flatpak"
+
+  - name: Add official flatpak repository
+    shell: "flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo"
+    register: "flatpak_result"
+    failed_when: "{{ flatpak_result.stderr | default(false, 'true') }}"
+
+  - name: Update flatpak sources
+    shell: "flatpak update"
+    register: "flatpak_update_result"
+    failed_when: "{{ flatpak_update_result.stderr | default(false, 'true') }}"
+  when: flatpak
 
 # SSH AGENT CONFIG
 - name: Enable adding of ssh key to agent

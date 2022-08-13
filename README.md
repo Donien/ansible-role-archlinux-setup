@@ -21,6 +21,8 @@ Role Variables
 
 You might want to change some variables in order to perform certain actions. A list of common variables to change and an explanation about what they do can be found beneath:
 
+- `flatpak`: If set to `true`, flatpak will be installed and the official repository will be set.
+  - default: `false`
 - `ssh_agent`: Allows for adding of ssh keys to ssh-agent.
   - default: `true`
   - **Requires** variable `username` to be manually set (e.g. in playbook)
