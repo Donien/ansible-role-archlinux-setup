@@ -93,6 +93,7 @@
     state: "present"
     name: "{{ packages.desktop_useful }}"
   when:
+    - desktop != ""
     - install.desktop_useful | bool
 
 - name: "Include vars for desktop '{{ desktop }}'"
